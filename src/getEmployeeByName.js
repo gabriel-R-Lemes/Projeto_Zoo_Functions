@@ -4,7 +4,10 @@ function getEmployeeByName(employeeName) {
   if (employeeName === undefined) {
     return {};
   }
-  const result = data.employees.find((element) => element.firstName === employeeName || element.lastName === employeeName);
+  const result = data.employees.find((element) => {
+    const { firstName, lastName } = element;
+    return (firstName === employeeName || lastName === employeeName);
+  });
   return result;
 }
 module.exports = getEmployeeByName;
