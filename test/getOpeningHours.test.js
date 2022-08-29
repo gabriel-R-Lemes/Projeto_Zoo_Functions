@@ -13,7 +13,7 @@ describe('Testes da função getOpeningHours', () => {
       Saturday: { open: 8, close: 10 },
       Sunday: { open: 8, close: 8 },
       Monday: { open: 0, close: 0 },
-    }
+    };
     expect(getOpeningHours()).toStrictEqual(end);
   });
   it('Testa se o zoologico estará fechado na Segunda', () => {
@@ -22,15 +22,22 @@ describe('Testes da função getOpeningHours', () => {
   it('Testa se o zoologico estará fechado na Segunda', () => {
     expect(getOpeningHours('Tuesday', '09:00-AM')).toBe('The zoo is open');
   });
-  //erros
+  // erros
   it('Testa se da erro ao colocar um dia inválido', () => {
     expect(() => getOpeningHours('Birthday', '10:00-AM')).toThrow('The day must be valid. Example: Monday');
-  })
+  });
   it('Testa se da erro ao colocar horas e minutos errado', () => {
     expect(() => getOpeningHours('Tuesday', '15:00-AM')).toThrow('The hour must be between 0 and 12');
-    expect(() => getOpeningHours('Tuesday', '11:77-AM')).toThrow('The minutes must be between 0 and 59');   
-  })
+    expect(() => getOpeningHours('Tuesday', '11:77-AM')).toThrow('The minutes must be between 0 and 59');
+  });
   it('Testa se da erro ao colocar um dia inválido', () => {
     expect(() => getOpeningHours('Birthday', '10:00-AM')).toThrow('The day must be valid. Example: Monday');
-  })
+  });
+  it('Testa se da erro ao colocar string em hora e minuto', () => {
+    expect(() => getOpeningHours('Tuesday', 'oie:00-AM')).toThrow('The hour should represent a number');
+    expect(() => getOpeningHours('Tuesday', '11:oie-AM')).toThrow('The minutes should represent a number');
+  });
+  it('Testa se da erro ao colocar colocar outra coisa inves de AM e PM', () => {
+    expect(() => getOpeningHours('Tuesday', '11:00-GO')).toThrow('The abbreviation must be \'AM\' or \'PM\'');
+  });
 });
