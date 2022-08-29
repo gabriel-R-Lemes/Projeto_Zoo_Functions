@@ -1,6 +1,59 @@
 const { hours } = require('../data/zoo_data');
 const data = require('../data/zoo_data');
 
+function nomeAnimal (nome) {
+  const alvo = data.species.find((element) => element.name === nome)
+  return alvo.availability;
+}
+function weekDay (day) {
+  const animaisDoDia = data.species.filter((element) => element.availability.includes(day));
+  const arrayOfTheDay = (Object.entries(data.hours).find((element) => element.includes(day)))
+  const hoursArray = Object.values(arrayOfTheDay);
+  const officeHour = `Open from ${hoursArray[1].open} until ${hoursArray[1].close}`
+  return{
+    day: {
+      officeHour,
+      exhibition: animaisDoDia.map((element)=> element.name),
+    }
+  }
+}
+
+function allDays () {
+  return {
+    Tuesday: {
+      officeHour: `Open from ${data.hours.Tuesday.open} until ${data.hours.Tuesday.close}`,
+      exhibition: data.species.filter((element) => element.availability
+      .includes('Tuesday')).map((element) => element.name),
+    },
+    Wednesday: {
+      officeHour: `Open from ${data.hours.Wednesday.open} until ${data.hours.Wednesday.close}`,
+      exhibition: data.species.filter((element) => element.availability
+      .includes('Wednesday')).map((element) => element.name),
+    },
+    Thursday: {
+      officeHour: `Open from ${data.hours.Thursday.open} until ${data.hours.Thursday.close}`,
+      exhibition: data.species.filter((element) => element.availability
+      .includes('Thursday')).map((element) => element.name),
+    },
+    Friday: {
+      officeHour: `Open from ${data.hours.Friday.open} until ${data.hours.Friday.close}`,
+      exhibition: data.species.filter((element) => element.availability
+      .includes('Friday')).map((element) => element.name),
+    },
+    Saturday: {
+      officeHour: `Open from ${data.hours.Saturday.open} until ${data.hours.Saturday.close}`,
+      exhibition: data.species.filter((element) => element.availability
+      .includes('Saturday')).map((element) => element.name),
+    },
+    Sunday: {
+      officeHour: `Open from ${data.hours.Sunday.open} until ${data.hours.Sunday.close}`,
+      exhibition: (data.species.filter((element) => element.availability
+      .includes('Sunday'))).map((element) => element.name),
+    },
+    Monday: { 'officeHour': 'CLOSED', 'exhibition': 'The zoo will be closed!' },
+  }
+}
+
 function getSchedule(scheduleTarget) {
   const animais = [
     'lions',    'tigers',
@@ -16,51 +69,14 @@ function getSchedule(scheduleTarget) {
     'Sunday'
   ]
   if (animais.includes(scheduleTarget)){
-    const alvo = data.species.find((element) => element.name === scheduleTarget)
-    return alvo.availability;
+    const result = nomeAnimal(scheduleTarget);
+    return result
   } if (dias.includes(scheduleTarget)){
-    const animaisDoDia = data.species.filter((element) => element.availability.includes(scheduleTarget));
-    const arrayOfTheDay = (Object.entries(data.hours).find((element) => element.includes(scheduleTarget)))
-    const hoursArray = Object.values(arrayOfTheDay);
-    const officeHour = `Open from ${hoursArray[0]} until ${hoursArray[1]}`
-    return{
-      scheduleTarget: {
-        officeHour,
-        exhibition: animaisDoDia,
-      }
-    }
+    const result = weekDay(scheduleTarget);
+    return result;
   }
-  return {
-    Tuesday: {
-      officeHour: `Open from ${data.hours.Tuesday.open} until ${data.hours.Tuesday.close}`,
-      exhibition: data.species.filter((element) => element.availability.includes('Tuesday')),
-    },
-    Wednesday: {
-      officeHour: `Open from ${data.hours.Wednesday.open} until ${data.hours.Wednesday.close}`,
-      exhibition: data.species.filter((element) => element.availability.includes('Wednesday')),
-    },
-    Thursday: {
-      officeHour: `Open from ${data.hours.Thursday.open} until ${data.hours.Thursday.close}`,
-      exhibition: data.species.filter((element) => element.availability.includes('Thursday')),
-    },
-    Friday: {
-      officeHour: `Open from ${data.hours.Friday.open} until ${data.hours.Friday.close}`,
-      exhibition: data.species.filter((element) => element.availability.includes('Friday')),
-    },
-    Saturday: {
-      officeHour: `Open from ${data.hours.Saturday.open} until ${data.hours.Saturday.close}`,
-      exhibition: data.species.filter((element) => element.availability.includes('Saturday')),
-    },
-    Sunday: {
-      officeHour: `Open from ${data.hours.Sunday.open} until ${data.hours.Sunday.close}`,
-      exhibition: data.species.filter((element) => element.availability.includes('Sunday')),
-    },
-    Monday: { 'officeHour': 'CLOSED', 'exhibition': 'The zoo will be closed!' },
-
-  }
+  return  allDays()  
 }
-const actual = data.species.filter((element) => element.availability.includes('Friday'))
-const expected = [ 'Tuesday', 'Thursday', 'Saturday', 'Sunday' ];
+console.log(getSchedule())
 
-console.log(actual.map((element) => element.name));
 module.exports = getSchedule;
